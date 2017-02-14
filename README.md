@@ -15,7 +15,32 @@
 * 각 요구사항을 구현하는 것이 중요한 것이 아니라 구현 과정을 통해 학습한 내용을 인식하는 것이 배움에 중요하다. 
 
 ### 요구사항 1 - http://localhost:8080/index.html로 접속시 응답
-* 
+  * RequestHandler.java
+      // 요청을 분석하고 대응하는 코드
+      
+        BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+        String line = br.readLine();
+        log.debug("request line : {}", line);
+
+        if (line == null)
+          return;
+
+        DataOutputStream dos = new DataOutputStream(out);
+        byte[] body = null;
+        String get = "GET";
+        do {
+          int chk = line.indexOf(get);
+          if (chk != -1) {
+            String[] s = line.split(" ");
+            String url = s[1];
+            log.debug("GET={}", url);
+
+            body = Files.readAllBytes(new File("./webapp" + url).toPath());
+          }
+          log.debug("header : {}", line);
+          line = br.readLine();
+        }
+        while(!line.equals(""));
 
 ### 요구사항 2 - get 방식으로 회원가입
 * 
